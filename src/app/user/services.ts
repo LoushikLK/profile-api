@@ -42,8 +42,8 @@ export default class UserService {
     perPage,
     search,
   }: {
-    userId: string;
-    role: string;
+    userId?: string;
+    role?: string;
     perPage?: number;
     pageNo?: number;
     search?: string;
@@ -58,6 +58,7 @@ export default class UserService {
       };
 
       if (role === "ADMIN") delete query.isPrivateAccount;
+      if (!userId) delete query._id;
       if (search)
         query.$or = [
           {

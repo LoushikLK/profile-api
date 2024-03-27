@@ -83,4 +83,33 @@ export default class AuthService {
       });
     }
   }
+  public async checkAuthentication(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const token = req.headers?.authorization?.split(" ")?.[1];
+
+      if (token) {
+        // extract token from header
+        const decoded = await verifyToken(token);
+        req.currentUser = {
+          _id: decoded?._id,
+          email: decoded?.email,
+          role: decoded?.role,
+        };
+
+        return next();
+      }
+
+      next();
+    } catch (error) {
+      const err = error as Error;
+      res.status(401).json({
+        success: false,
+        msg: err.message,
+      });
+    }
+  }
 }

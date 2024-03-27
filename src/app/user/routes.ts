@@ -150,6 +150,9 @@ export default class UserRouter extends AuthService {
      *               bio:
      *                 type: string
      *                 description: Biography of the user.
+     *               image:
+     *                 type: form-data
+     *                 description: Profile image file.
      *     responses:
      *       '200':
      *         description: User profile updated successfully.
@@ -270,6 +273,9 @@ export default class UserRouter extends AuthService {
      *               bio:
      *                 type: string
      *                 description: Biography of the user.
+     *               image:
+     *                 type: form-data
+     *                 description: Profile image file.
      *     responses:
      *       '200':
      *         description: User profile updated successfully.
@@ -516,7 +522,7 @@ export default class UserRouter extends AuthService {
     this.router.get(
       "/",
       UserValidation.validateGetAllUsers(),
-      this.isAuthenticated,
+      this.checkAuthentication,
       this.controller.getAllUserData.bind(this.controller)
     );
   }
