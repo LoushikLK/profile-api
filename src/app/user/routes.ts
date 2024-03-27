@@ -522,7 +522,8 @@ export default class UserRouter extends AuthService {
     this.router.get(
       "/",
       UserValidation.validateGetAllUsers(),
-      this.checkAuthentication,
+      // this.checkAuthentication,
+      this.isAuthenticated,
       this.controller.getAllUserData.bind(this.controller)
     );
   }

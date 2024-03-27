@@ -19,6 +19,7 @@ const routerHandler = (app: Application) => {
         folder,
         "routes"
       ));
+      console.log("/api/v1/" + folder);
       app.use("/api/v1/" + folder, new router.default().router);
     }
   });
