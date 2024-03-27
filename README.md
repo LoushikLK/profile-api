@@ -90,7 +90,7 @@ Ensure to set up the following environment variables:
 
 ## Hosting and API Playground (Optional)
 
-The API is hosted in vercel with the url [Deployed to Vercel](https://sfqmxzalh0.execute-api.ap-south-1.amazonaws.com/dev/api/v1/google/login)
+The API is hosted in vercel with the url [Deployed to Vercel](https://profile-api-liart.vercel.app/)
 
 ## Process
 
@@ -105,4 +105,4 @@ The API is hosted in vercel with the url [Deployed to Vercel](https://sfqmxzalh0
 
 ## Demo
 
-- [Deployed to Vercel](https://sfqmxzalh0.execute-api.ap-south-1.amazonaws.com/dev/api/v1/google/login)
+- [Deployed to Vercel](https://profile-api-liart.vercel.app/)
