@@ -97,7 +97,14 @@ const topLevelMiddleware = (app: Application) => {
   app.use(helmet());
 
   const specs = swaggerJsDoc(swaggerOptions);
-  app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
+  app.use(
+    "/docs",
+    swaggerUi.serve,
+    swaggerUi.setup(specs, {
+      customCssUrl:
+        "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css",
+    })
+  );
 
   app.use((req, res, next) => {
     console.table([
