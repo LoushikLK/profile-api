@@ -350,15 +350,7 @@ export default class AuthRouter extends AuthService {
      *       - Auth
      *     description: Endpoint to change user password.
      *     security:
-     *      - bearerAuth: []
-     *     parameters:
-     *       - in: header
-     *         name: Authorization
-     *         description: Bearer token for authentication
-     *         required: true
-     *         schema:
-     *           type: string
-     *           format: bearerToken
+     *       - bearerAuth: []
      *     requestBody:
      *       required: true
      *       content:
@@ -399,8 +391,12 @@ export default class AuthRouter extends AuthService {
      *                 msg:
      *                   type: string
      *                   description: Error message describing the issue.
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the request was successful.
      *             example:
      *               msg: Email is not valid.
+     *               success: false
      *       '401':
      *         description: Unauthorized. User not authenticated.
      *         content:
@@ -411,8 +407,12 @@ export default class AuthRouter extends AuthService {
      *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the request was successful.
      *             example:
      *               msg: Unauthorized access.
+     *               success: false
      *       '403':
      *         description: Forbidden. User does not have permission to perform the action.
      *         content:
@@ -423,8 +423,28 @@ export default class AuthRouter extends AuthService {
      *                 msg:
      *                   type: string
      *                   description: Error message indicating the forbidden access.
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the request was successful.
      *             example:
      *               msg: You do not have permission to change the password.
+     *               success: false
+     *       '406':
+     *         description: Not Acceptable. User provided data is not valid.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 msg:
+     *                   type: string
+     *                   description: Error message indicating the not acceptable data.
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the request was successful.
+     *             example:
+     *               msg: Password is not valid.
+     *               success: false
      */
 
     this.router.post(
@@ -455,7 +475,7 @@ export default class AuthRouter extends AuthService {
      *                 description: User's email address to resend verification code.
      *     responses:
      *       '200':
-     *         description: Verification code resent successfully.
+     *         description: Verification email sent.
      *         content:
      *           application/json:
      *             schema:
@@ -469,7 +489,7 @@ export default class AuthRouter extends AuthService {
      *                   description: Message indicating the result of the operation.
      *             example:
      *               success: true
-     *               msg: Verification code resent successfully.
+     *               msg: Verification email sent.
      *       '400':
      *         description: Invalid request body or parameters.
      *         content:
@@ -685,11 +705,16 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the password reset was successful.
      *                 msg:
      *                   type: string
      *                   description: Error message describing the issue.
      *             example:
      *               msg: Invalid OTP or email format.
+     *               success: false
+     *
      *       '401':
      *         description: Unauthorized. User not authenticated.
      *         content:
@@ -697,11 +722,15 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the password reset was successful.
      *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
      *             example:
      *               msg: Unauthorized access.
+     *               success: false
      */
 
     this.router.post(
@@ -720,14 +749,7 @@ export default class AuthRouter extends AuthService {
      *     description: Endpoint to logout a user by invalidating the bearer token.
      *     security:
      *      - bearerAuth: []
-     *     parameters:
-     *       - in: header
-     *         name: Authorization
-     *         description: Bearer token for authentication
-     *         required: true
-     *         schema:
-     *           type: string
-     *           format: bearerToken
+
      *     responses:
      *       '200':
      *         description: User logged out successfully.

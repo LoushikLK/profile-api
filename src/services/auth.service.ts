@@ -26,8 +26,15 @@ export default class AuthService {
           "Unauthorized access. Please login to continue."
         );
 
+      const token = req.headers.authorization?.split(" ")?.[1];
+
+      if (!token)
+        throw new Unauthorized(
+          "Unauthorized access. Please login to continue."
+        );
+
       // extract token from header
-      const decoded = await verifyToken(req.headers.authorization);
+      const decoded = await verifyToken(token);
       req.currentUser = {
         _id: decoded?._id,
         email: decoded?.email,
@@ -49,8 +56,15 @@ export default class AuthService {
           "Unauthorized access. Please login to continue."
         );
 
+      const token = req.headers.authorization?.split(" ")?.[1];
+
+      if (!token)
+        throw new Unauthorized(
+          "Unauthorized access. Please login to continue."
+        );
+
       // extract token from header
-      const decoded = await verifyToken(req.headers.authorization);
+      const decoded = await verifyToken(token);
       req.currentUser = {
         _id: decoded?._id,
         email: decoded?.email,
