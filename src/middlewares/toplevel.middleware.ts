@@ -4,8 +4,28 @@ import fileUpload from "express-fileupload";
 import session from "express-session";
 import helmet from "helmet";
 import passport from "passport";
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 import envConfig from "../configs/env.config";
 import PassportService from "./passport.middleware";
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.1.0",
+    info: {
+      title: "Profile API Swagger",
+      version: "0.1.0",
+      description:
+        "This is a simple CRUD API application for profile management",
+    },
+    servers: [
+      {
+        url: "http://localhost:8000/",
+      },
+    ],
+  },
+  apis: ["./src/app/**/routes.ts", "./build/app/**/routes.js"],
+};
 
 const topLevelMiddleware = (app: Application) => {
   app.use(
@@ -53,6 +73,9 @@ const topLevelMiddleware = (app: Application) => {
   });
 
   app.use(helmet());
+
+  const specs = swaggerJsDoc(swaggerOptions);
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
   app.use((req, res, next) => {
     console.table([

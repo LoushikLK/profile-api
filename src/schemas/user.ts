@@ -23,6 +23,10 @@ const userSchema = new Schema<IUser, Model<IUser>>({
   address: String,
   password: String,
   token: String,
+  isOnline: {
+    type: Boolean,
+    default: false,
+  },
   verificationInfo: {
     otp: {
       type: Number,

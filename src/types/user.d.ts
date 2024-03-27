@@ -14,6 +14,7 @@ export interface IUser extends Document {
   password: string;
   isPrivateAccount: boolean;
   token: string;
+  isOnline: boolean;
   verificationInfo: {
     otp: number;
     validity: number;
