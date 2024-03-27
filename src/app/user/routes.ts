@@ -19,18 +19,525 @@ export default class UserRouter extends AuthService {
    */
 
   public routes(): void {
+    /**
+     * @openapi
+     * /api/v1/user/self:
+     *   get:
+     *     summary: Get user profile
+     *     tags:
+     *      - User
+     *     description: Endpoint to retrieve the profile of the authenticated user.
+     *     security:
+     *       - bearerAuth: []
+     *     parameters:
+     *       - in: header
+     *         name: Authorization
+     *         description: Bearer token for authentication
+     *         required: true
+     *         schema:
+     *           type: string
+     *           format: bearerToken
+     *     responses:
+     *       '200':
+     *         description: User profile retrieved successfully.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the profile retrieval was successful.
+     *                 message:
+     *                   type: string
+     *                   description: Message indicating the result of the operation.
+     *                 data:
+     *                   type: object
+     *                   description: Object containing user profile data.
+     *                   properties:
+     *                     data:
+     *                       type: object
+     *                       description: User profile data.
+     *             example:
+     *               success: true
+     *               message: User profile retrieved successfully.
+     *               data:
+     *                 data:
+     *                   displayName: John Doe
+     *                   gender: male
+     *                   phoneNumber: "+1234567890"
+     *                   countryCode: "+1"
+     *                   country: USA
+     *                   state: California
+     *                   district: San Francisco
+     *                   pinCode: "12345"
+     *                   address: 123 Main St
+     *                   isOnline: true
+     *                   photoUrl: "https://example.com/profile.jpg"
+     *                   isPrivateAccount: false
+     *                   bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+     *       '401':
+     *         description: Unauthorized. User not authenticated.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the profile retrieval failed due to unauthorized access.
+     *                 message:
+     *                   type: string
+     *                   description: Error message indicating the unauthorized access.
+     *             example:
+     *               success: false
+     *               message: Unauthorized access. Please login to continue.
+     */
+
     this.router.get("/self", this.isAuthenticated, this.controller.getSelf);
+
+    /**
+     * @openapi
+     * /api/v1/user/self:
+     *   patch:
+     *     summary: Update user profile
+     *     description: Endpoint to update user profile details.
+     *     security:
+     *       - bearerAuth: []
+     *     parameters:
+     *       - in: header
+     *         name: Authorization
+     *         description: Bearer token for authentication
+     *         required: true
+     *         schema:
+     *           type: string
+     *           format: bearerToken
+     *     tags:
+     *       - User
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               displayName:
+     *                 type: string
+     *                 description: Display name of the user.
+     *               gender:
+     *                 type: string
+     *                 enum: [male, female, other]
+     *                 description: Gender of the user.
+     *               phoneNumber:
+     *                 type: string
+     *                 description: Phone number of the user.
+     *               countryCode:
+     *                 type: string
+     *                 description: Country code for the phone number.
+     *               country:
+     *                 type: string
+     *                 description: Country of the user.
+     *               state:
+     *                 type: string
+     *                 description: State of the user.
+     *               district:
+     *                 type: string
+     *                 description: District of the user.
+     *               pinCode:
+     *                 type: string
+     *                 description: Pin code of the user's address.
+     *               address:
+     *                 type: string
+     *                 description: Address of the user.
+     *               isOnline:
+     *                 type: boolean
+     *                 description: Indicates if the user is online.
+     *               photoUrl:
+     *                 type: string
+     *                 description: URL of the user's profile photo.
+     *               isPrivateAccount:
+     *                 type: boolean
+     *                 description: Indicates if the user's account is private.
+     *               bio:
+     *                 type: string
+     *                 description: Biography of the user.
+     *     responses:
+     *       '200':
+     *         description: User profile updated successfully.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the profile update was successful.
+     *                 message:
+     *                   type: string
+     *                   description: Message indicating the result of the operation.
+     *             example:
+     *               success: true
+     *               message: User profile updated successfully.
+     *       '400':
+     *         description: Invalid request body or parameters.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 message:
+     *                   type: string
+     *                   description: Error message describing the issue.
+     *             example:
+     *               message: Invalid phone number format.
+     *       '401':
+     *         description: Unauthorized. User not authenticated.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 message:
+     *                   type: string
+     *                   description: Error message indicating the unauthorized access.
+     *             example:
+     *               message: Unauthorized access.
+     */
+
     this.router.patch(
       "/self",
       this.isAuthenticated,
       this.controller.updateSelf
     );
+
+    /**
+     * @openapi
+     * /api/v1/user/{userId}:
+     *   patch:
+     *     summary: Update user profile by admin
+     *     tags:
+     *       - User
+     *     description: Endpoint to update user profile details by an admin.
+     *     security:
+     *       - bearerAuth: []
+     *     parameters:
+     *       - in: header
+     *         name: Authorization
+     *         description: Bearer token for authentication
+     *         required: true
+     *         schema:
+     *           type: string
+     *           format: bearerToken
+     *       - in: path
+     *         name: userId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: ID of the user to update.
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               displayName:
+     *                 type: string
+     *                 description: Display name of the user.
+     *               gender:
+     *                 type: string
+     *                 enum: [male, female, other]
+     *                 description: Gender of the user.
+     *               phoneNumber:
+     *                 type: string
+     *                 description: Phone number of the user.
+     *               countryCode:
+     *                 type: string
+     *                 description: Country code for the phone number.
+     *               country:
+     *                 type: string
+     *                 description: Country of the user.
+     *               state:
+     *                 type: string
+     *                 description: State of the user.
+     *               district:
+     *                 type: string
+     *                 description: District of the user.
+     *               pinCode:
+     *                 type: string
+     *                 description: Pin code of the user's address.
+     *               address:
+     *                 type: string
+     *                 description: Address of the user.
+     *               isOnline:
+     *                 type: boolean
+     *                 description: Indicates if the user is online.
+     *               photoUrl:
+     *                 type: string
+     *                 description: URL of the user's profile photo.
+     *               isPrivateAccount:
+     *                 type: boolean
+     *                 description: Indicates if the user's account is private.
+     *               blockStatus:
+     *                 type: boolean
+     *                 description: Indicates if the user is blocked.
+     *               emailVerified:
+     *                 type: boolean
+     *                 description: Indicates if the user's email is verified.
+     *               bio:
+     *                 type: string
+     *                 description: Biography of the user.
+     *     responses:
+     *       '200':
+     *         description: User profile updated successfully.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the profile update was successful.
+     *                 message:
+     *                   type: string
+     *                   description: Message indicating the result of the operation.
+     *             example:
+     *               success: true
+     *               message: User profile updated successfully.
+     *       '401':
+     *         description: Unauthorized. User not authenticated or user does not have admin role.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates that the update failed due to unauthorized access.
+     *                 message:
+     *                   type: string
+     *                   description: Error message indicating the unauthorized access.
+     *             example:
+     *               success: false
+     *               message: Unauthorized access. Admin role required.
+     */
+
     this.router.patch("/:userId", this.isAdmin, this.controller.updateUserById);
+
+    /**
+     * @openapi
+     * /api/v1/user/{userId}:
+     *   get:
+     *     summary: Get user profile by userId
+     *     tags:
+     *      - User
+     *     description: Endpoint to retrieve the profile of a user by userId.
+     *     security:
+     *       - bearerAuth: []
+     *     parameters:
+     *       - in: header
+     *         name: Authorization
+     *         description: Bearer token for authentication
+     *         required: true
+     *         schema:
+     *           type: string
+     *           format: bearerToken
+     *       - in: path
+     *         name: userId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: ID of the user to retrieve profile for.
+     *     responses:
+     *       '200':
+     *         description: User profile retrieved successfully.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the profile retrieval was successful.
+     *                 message:
+     *                   type: string
+     *                   description: Message indicating the result of the operation.
+     *                 data:
+     *                   type: object
+     *                   description: Object containing user profile data.
+     *                   properties:
+     *                     data:
+     *                       type: object
+     *                       description: User profile data.
+     *             example:
+     *               success: true
+     *               message: User profile retrieved successfully.
+     *               data:
+     *                 data:
+     *                   userId: "12345"
+     *                   displayName: John Doe
+     *                   gender: male
+     *                   phoneNumber: "+1234567890"
+     *                   countryCode: "+1"
+     *                   country: USA
+     *                   state: California
+     *                   district: San Francisco
+     *                   pinCode: "12345"
+     *                   address: 123 Main St
+     *                   isOnline: true
+     *                   photoUrl: "https://example.com/profile.jpg"
+     *                   isPrivateAccount: false
+     *                   blockStatus: false
+     *                   emailVerified: true
+     *                   bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+     *       '401':
+     *         description: Unauthorized. User not authenticated.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the profile retrieval failed due to unauthorized access.
+     *                 message:
+     *                   type: string
+     *                   description: Error message indicating the unauthorized access.
+     *             example:
+     *               success: false
+     *               message: Unauthorized access. Please login to continue.
+     *       '404':
+     *         description: User not found.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates that the user profile retrieval failed because the user was not found.
+     *                 message:
+     *                   type: string
+     *                   description: Error message indicating the user was not found.
+     *             example:
+     *               success: false
+     *               message: User not found.
+     */
+
     this.router.get(
       "/:userId",
       this.isAuthenticated,
       this.controller.getUserById
     );
+
+    /**
+     * @openapi
+     * /api/v1/user:
+     *   get:
+     *     summary: Get all users
+     *     tags:
+     *       - User
+     *     description: Endpoint to retrieve all user data.
+     *     security:
+     *       - bearerAuth: []
+     *     parameters:
+     *       - in: header
+     *         name: Authorization
+     *         description: Bearer token for authentication
+     *         required: true
+     *         schema:
+     *           type: string
+     *           format: bearerToken
+     *       - in: query
+     *         name: perPage
+     *         schema:
+     *           type: integer
+     *         description: Number of items per page (optional).
+     *       - in: query
+     *         name: pageNo
+     *         schema:
+     *           type: integer
+     *         description: Page number (optional).
+     *       - in: query
+     *         name: search
+     *         schema:
+     *           type: string
+     *         description: Search query to filter users (optional).
+     *     responses:
+     *       '200':
+     *         description: Users retrieved successfully.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the users were retrieved successfully.
+     *                 message:
+     *                   type: string
+     *                   description: Message indicating the result of the operation.
+     *                 data:
+     *                   type: object
+     *                   description: Object containing user data.
+     *                   properties:
+     *                     data:
+     *                       type: array
+     *                       description: Array containing user objects.
+     *                       items:
+     *                         type: object
+     *                         description: User object.
+     *                     perPage:
+     *                       type: integer
+     *                       description: Number of items per page.
+     *                     pageNo:
+     *                       type: integer
+     *                       description: Current page number.
+     *                     totalCount:
+     *                       type: integer
+     *                       description: Total count of users.
+     *             example:
+     *               success: true
+     *               message: Users retrieved successfully.
+     *               data:
+     *                 data:
+     *                   - userId: "12345"
+     *                     displayName: John Doe
+     *                     gender: male
+     *                     phoneNumber: "+1234567890"
+     *                     countryCode: "+1"
+     *                     country: USA
+     *                     state: California
+     *                     district: San Francisco
+     *                     pinCode: "12345"
+     *                     address: 123 Main St
+     *                     isOnline: true
+     *                     photoUrl: "https://example.com/profile.jpg"
+     *                     isPrivateAccount: false
+     *                     blockStatus: false
+     *                     emailVerified: true
+     *                     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+     *                 perPage: 10
+     *                 pageNo: 1
+     *                 totalCount: 100
+     *       '401':
+     *         description: Unauthorized. User not authenticated.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates that the users retrieval failed due to unauthorized access.
+     *                 message:
+     *                   type: string
+     *                   description: Error message indicating the unauthorized access.
+     *             example:
+     *               success: false
+     *               message: Unauthorized access. Please login to continue.
+     */
+
     this.router.get("/", this.isAuthenticated, this.controller.getAllUserData);
   }
 }
