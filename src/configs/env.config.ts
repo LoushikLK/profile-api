@@ -12,6 +12,7 @@ const envConfig = {
   PassportSessionSecret: process.env.PASSPORT_SESSION_SECRET || "",
   AppServiceEmail: process.env.SERVICE_EMAIL || "",
   AppServiceEmailPassword: process.env.EMAIL_SERVICE_PASSWORD || "",
+  AppBaseApiUrl: process.env.API_BASE_URL || "",
 
   //APP DETAILS
 

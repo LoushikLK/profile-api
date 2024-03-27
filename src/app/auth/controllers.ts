@@ -32,7 +32,7 @@ export default class Controllers {
         subject: "Verify Your Email",
         text: `
         <h3 style="width:100%;text-align:center;" >Please verify your email by clicking on the link below.</h3>
-        <a style="width:100%;text-align:center;display:flex;" href="http://localhost:8000/verify-email?token=${newUser.token}" >Verify</a>
+        <a style="width:100%;text-align:center;display:flex;" href="${envConfig.AppBaseApiUrl}/verify-email?token=${newUser.token}" >Verify</a>
         `,
       });
       //send response to client
@@ -78,7 +78,7 @@ export default class Controllers {
         subject: "Verify Your Email",
         text: `
         <h3 style="width:100%;text-align:center;" >Please verify your email by clicking on the link below.</h3>
-        <a style="width:100%;text-align:center;display:flex;" href="http://localhost:8000/verify-email/${token}" >Verify</a>
+        <a style="width:100%;text-align:center;display:flex;" href="${envConfig.AppBaseApiUrl}/verify-email/${token}" >Verify</a>
         `,
       });
 
@@ -171,7 +171,7 @@ export default class Controllers {
         subject: "Password Changed!",
         text: `
         <h3 style="width:100%;text-align:center;" >Your password has been changed recently. If not done by you change your password immediately.</h3>
-        <a style="width:100%;text-align:center;display:flex;" href="http://localhost:8000/change-password >Change Password</a>
+        <a style="width:100%;text-align:center;display:flex;" href="${envConfig.AppBaseApiUrl}/change-password >Change Password</a>
         `,
       });
       //send response to client
