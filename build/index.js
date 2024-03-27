@@ -18,7 +18,7 @@ const server = (0, http_1.createServer)(app);
 (0, toplevel_middleware_1.default)(app); //setup middleware
 (0, routeParser_helper_1.default)(app); //setup routes
 (0, bottom_middleware_1.default)(app); //setup bottom middleware handles (e.g. error ,not found route)
-server.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
-});
+// server.listen(PORT, () => {
+//   console.log(`Server started on port ${PORT}`);
+// });
 exports.default = server;
