@@ -30,14 +30,6 @@ export default class UserRouter extends AuthService {
      *     description: Endpoint to retrieve the profile of the authenticated user.
      *     security:
      *       - bearerAuth: []
-     *     parameters:
-     *       - in: header
-     *         name: Authorization
-     *         description: Bearer token for authentication
-     *         required: true
-     *         schema:
-     *           type: string
-     *           format: bearerToken
      *     responses:
      *       '200':
      *         description: User profile retrieved successfully.
@@ -95,7 +87,11 @@ export default class UserRouter extends AuthService {
      *               msg: Unauthorized access. Please login to continue.
      */
 
-    this.router.get("/self", this.isAuthenticated, this.controller.getSelf);
+    this.router.get(
+      "/self",
+      this.isAuthenticated,
+      this.controller.getSelf.bind(this.controller)
+    );
 
     /**
      * @openapi
@@ -105,14 +101,6 @@ export default class UserRouter extends AuthService {
      *     description: Endpoint to update user profile details.
      *     security:
      *       - bearerAuth: []
-     *     parameters:
-     *       - in: header
-     *         name: Authorization
-     *         description: Bearer token for authentication
-     *         required: true
-     *         schema:
-     *           type: string
-     *           format: bearerToken
      *     tags:
      *       - User
      *     requestBody:
@@ -209,7 +197,7 @@ export default class UserRouter extends AuthService {
       "/self",
       this.isAuthenticated,
       UserValidation.validateSelfUpdate(),
-      this.controller.updateSelf
+      this.controller.updateSelf.bind(this.controller)
     );
 
     /**
@@ -223,13 +211,6 @@ export default class UserRouter extends AuthService {
      *     security:
      *       - bearerAuth: []
      *     parameters:
-     *       - in: header
-     *         name: Authorization
-     *         description: Bearer token for authentication
-     *         required: true
-     *         schema:
-     *           type: string
-     *           format: bearerToken
      *       - in: path
      *         name: userId
      *         required: true
@@ -328,7 +309,7 @@ export default class UserRouter extends AuthService {
       "/:userId",
       UserValidation.validateUserById(),
       this.isAdmin,
-      this.controller.updateUserById
+      this.controller.updateUserById.bind(this.controller)
     );
 
     /**
@@ -342,13 +323,6 @@ export default class UserRouter extends AuthService {
      *     security:
      *       - bearerAuth: []
      *     parameters:
-     *       - in: header
-     *         name: Authorization
-     *         description: Bearer token for authentication
-     *         required: true
-     *         schema:
-     *           type: string
-     *           format: bearerToken
      *       - in: path
      *         name: userId
      *         required: true
@@ -435,7 +409,7 @@ export default class UserRouter extends AuthService {
       "/:userId",
       UserValidation.validateGetUserById(),
       this.isAuthenticated,
-      this.controller.getUserById
+      this.controller.getUserById.bind(this.controller)
     );
 
     /**
@@ -449,13 +423,6 @@ export default class UserRouter extends AuthService {
      *     security:
      *       - bearerAuth: []
      *     parameters:
-     *       - in: header
-     *         name: Authorization
-     *         description: Bearer token for authentication
-     *         required: true
-     *         schema:
-     *           type: string
-     *           format: bearerToken
      *       - in: query
      *         name: perPage
      *         schema:
@@ -550,7 +517,7 @@ export default class UserRouter extends AuthService {
       "/",
       UserValidation.validateGetAllUsers(),
       this.isAuthenticated,
-      this.controller.getAllUserData
+      this.controller.getAllUserData.bind(this.controller)
     );
   }
 }

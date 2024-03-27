@@ -14,6 +14,8 @@ export default class UserController extends UserService {
 
   public async getSelf(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log(req?.currentUser);
+
       // update the user with id
       const data = await this.getUserData(req?.currentUser?._id);
 

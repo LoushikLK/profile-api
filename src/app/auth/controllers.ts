@@ -136,7 +136,7 @@ export default class Controllers {
       //create a token
       const token = await generateToken({
         email: user?.email,
-        id: user?._id,
+        _id: user?._id,
         displayName: user?.displayName,
         role: user?.role,
       });
