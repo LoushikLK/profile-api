@@ -5,6 +5,7 @@ export interface IUser extends Document {
   email: string;
   gender: "MALE" | "FEMALE" | "OTHER" | "NONE";
   phoneNumber: string;
+  bio: string;
   countryCode: string;
   country: string;
   state: string;
@@ -23,7 +24,6 @@ export interface IUser extends Document {
   photoPath: string;
   role: "ADMIN" | "USER";
   blockStatus: "BLOCKED" | "UNBLOCKED";
-  phoneNumberVerified: boolean;
   emailVerified: boolean;
   googleId: string;
   googleAccessToken: string;

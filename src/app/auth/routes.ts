@@ -13,15 +13,14 @@ import {
   validateResendVerificationCode,
 } from "./validations";
 
-export default class AuthRouter {
+export default class AuthRouter extends AuthService {
   public router: Router;
   private controller: Controllers;
-  private AuthService: AuthService;
 
   constructor() {
+    super();
     this.router = Router();
     this.controller = new Controllers();
-    this.AuthService = new AuthService();
     this.routes();
   }
 
@@ -405,7 +404,7 @@ export default class AuthRouter {
 
     this.router.post(
       "/change-password",
-      this.AuthService.isAuthenticated,
+      this.isAuthenticated,
       validateChangePassword(),
       this.controller.changePassword.bind(this.controller)
     );
@@ -726,7 +725,7 @@ export default class AuthRouter {
 
     this.router.post(
       "/logout",
-      this.AuthService.isAuthenticated,
+      this.isAuthenticated,
       this.controller.logout.bind(this.controller)
     );
   }

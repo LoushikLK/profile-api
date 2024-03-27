@@ -15,6 +15,7 @@ const userSchema = new Schema<IUser, Model<IUser>>({
     unique: true,
     sparse: true,
   },
+  bio: String,
   countryCode: String,
   country: String,
   state: String,
@@ -43,10 +44,6 @@ const userSchema = new Schema<IUser, Model<IUser>>({
     default: false,
   },
   blockStatus: String,
-  phoneNumberVerified: {
-    type: Boolean,
-    default: false,
-  },
   emailVerified: {
     type: Boolean,
     default: false,

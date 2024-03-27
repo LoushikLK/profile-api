@@ -42,7 +42,11 @@ const topLevelMiddleware = (app: Application) => {
     })
   );
 
-  app.use(fileUpload());
+  app.use(
+    fileUpload({
+      useTempFiles: true,
+    })
+  );
   app.use(express.json());
 
   //create session

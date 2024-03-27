@@ -1,72 +1,69 @@
 import { NotFound } from "http-errors";
-import { Types } from "mongoose";
+import { FilterQuery } from "mongoose";
+import paginationHelper from "../../helpers/pagination.helper";
 import { UserModel } from "../../schemas/user";
 import { IUser } from "../../types/user";
 
 export default class UserService {
-  public async handleSelfData(userId: string) {
+  public async getUserData(userId: string) {
     try {
-      const user = await UserModel.aggregate([
-        {
-          $match: {
-            _id: new Types.ObjectId(userId),
-          },
-        },
-        {
-          $lookup: {
-            from: "githubs",
-            localField: "_id",
-            foreignField: "userId",
-            as: "github",
-            pipeline: [
-              {
-                $project: {
-                  __v: 0,
-                  updatedAt: 0,
-                  createdAt: 0,
-                  accessTokenExpireAt: 0,
-                  refreshTokenExpireAt: 0,
-                  accessToken: 0,
-                  refreshToken: 0,
-                },
-              },
-            ],
-          },
-        },
-        {
-          $addFields: {
-            github: {
-              $arrayElemAt: ["$github", 0],
-            },
-            isGithubConnected: {
-              $cond: {
-                if: {
-                  $eq: ["$github", []],
-                },
-                then: false,
-                else: true,
-              },
-            },
-          },
-        },
-        {
-          $project: {
-            __v: 0,
-            updatedAt: 0,
-            password: 0,
-            githubAccessToken: 0,
-            googleAccessToken: 0,
-            googleSecretToken: 0,
-            githubSecretToken: 0,
-            verificationInfo: 0,
-            token: 0,
-          },
-        },
-      ]);
+      const user = await UserModel.findById(userId)
+        .select(
+          "-__v -createdAt -updatedAt -password -googleAccessToken -googleSecretToken -verificationInfo -token  -photoPath"
+        )
+        .lean();
 
-      if (!user || user.length === 0) throw new NotFound("User not found.");
+      if (!user) throw new NotFound("User not found.");
 
-      return user[0];
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+  public async allUserData({
+    userId,
+    role,
+    pageNo,
+    perPage,
+    search,
+  }: {
+    userId: string;
+    role: string;
+    perPage?: number;
+    pageNo?: number;
+    search?: string;
+  }) {
+    try {
+      let query: FilterQuery<IUser> = {
+        _id: {
+          $ne: userId,
+        },
+        isPrivateAccount: false,
+      };
+
+      if (role === "ADMIN") delete query.isPrivateAccount;
+      if (search)
+        query.$or = [
+          {
+            displayName: new RegExp(search, "i"),
+          },
+          {
+            email: new RegExp(search, "i"),
+          },
+          {
+            phoneNumber: new RegExp(search, "i"),
+          },
+        ];
+
+      const userData = await paginationHelper({
+        model: UserModel,
+        query,
+        pageNo,
+        perPage,
+        sort: { createdAt: -1 },
+      });
+
+      return userData;
     } catch (error) {
       throw error;
     }

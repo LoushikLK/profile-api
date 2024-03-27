@@ -42,4 +42,31 @@ export default class AuthService {
       });
     }
   }
+  public async isAdmin(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (!req.headers.authorization)
+        throw new Unauthorized(
+          "Unauthorized access. Please login to continue."
+        );
+
+      // extract token from header
+      const decoded = await verifyToken(req.headers.authorization);
+      req.currentUser = {
+        _id: decoded?._id,
+        email: decoded?.email,
+        role: decoded?.role,
+      };
+
+      if (decoded?.role !== "ADMIN")
+        throw new Unauthorized("Unauthorized access. Permission not granted.");
+
+      next();
+    } catch (error) {
+      const err = error as Error;
+      res.status(401).json({
+        success: false,
+        msg: err.message,
+      });
+    }
+  }
 }

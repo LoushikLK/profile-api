@@ -17,6 +17,11 @@ const envConfig = {
 
   APP_NAME: process.env.APP_NAME || "",
   APP_EMAIL: process.env.EMAIL || "",
+
+  //CLOUDINARY CONFIG
+  CloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
+  CloudinaryApiKey: process.env.CLOUDINARY_API_KEY || "",
+  CloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET || "",
 };
 
 export default envConfig;

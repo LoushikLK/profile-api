@@ -18,11 +18,15 @@ export default class UserRouter extends AuthService {
    * @return {void} - Does not return anything.
    */
 
-  public routes() {
-    this.router.get(
+  public routes(): void {
+    this.router.get("/self", this.isAuthenticated, this.controller.getSelf);
+    this.router.patch(
       "/self",
       this.isAuthenticated,
-      this.controller.getSelf.bind(this.controller)
+      this.controller.updateSelf
     );
+    this.router.patch("/:userId", this.isAdmin, this.controller.updateUserById);
+    this.router.get("/:userId", this.isAdmin, this.controller.updateUserById);
+    this.router.get("/", this.isAuthenticated, this.controller.getAllUserData);
   }
 }
