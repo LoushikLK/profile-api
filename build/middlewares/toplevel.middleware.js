@@ -89,7 +89,9 @@ const topLevelMiddleware = (app) => {
     }));
     app.use((0, helmet_1.default)());
     const specs = (0, swagger_jsdoc_1.default)(swaggerOptions);
-    app.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(specs));
+    app.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(specs, {
+        customCssUrl: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css",
+    }));
     app.use((req, res, next) => {
         var _a;
         console.table([
