@@ -54,6 +54,7 @@ export default class UserService {
           $ne: userId,
         },
         isPrivateAccount: false,
+        role: "USER",
       };
 
       if (role === "ADMIN") delete query.isPrivateAccount;
@@ -76,6 +77,8 @@ export default class UserService {
         pageNo,
         perPage,
         sort: { createdAt: -1 },
+        select:
+          "-password -googleAccessToken -googleSecretToken -verificationInfo -token -photoPath -__v",
       });
 
       return userData;
