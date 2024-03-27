@@ -7,7 +7,9 @@ cloudinary.config({
   api_secret: envConfig.CloudinaryApiSecret,
 });
 
-export const uploadFile = async (file: string) => {
+export const uploadFile = async (
+  file: string
+): Promise<{ url: string; path: string }> => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload(
       file,

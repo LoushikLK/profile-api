@@ -26,7 +26,11 @@ export default class UserRouter extends AuthService {
       this.controller.updateSelf
     );
     this.router.patch("/:userId", this.isAdmin, this.controller.updateUserById);
-    this.router.get("/:userId", this.isAdmin, this.controller.updateUserById);
+    this.router.get(
+      "/:userId",
+      this.isAuthenticated,
+      this.controller.getUserById
+    );
     this.router.get("/", this.isAuthenticated, this.controller.getAllUserData);
   }
 }

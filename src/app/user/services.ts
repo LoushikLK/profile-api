@@ -5,7 +5,11 @@ import { UserModel } from "../../schemas/user";
 import { IUser } from "../../types/user";
 
 export default class UserService {
-  public async getUserData(userId: string) {
+  public async getUserData(
+    userId: string,
+    currentUserId?: string,
+    role?: string
+  ) {
     try {
       const user = await UserModel.findById(userId)
         .select(
@@ -14,6 +18,17 @@ export default class UserService {
         .lean();
 
       if (!user) throw new NotFound("User not found.");
+
+      //check if user is private or not and check if current user has admin privilege
+
+      if (
+        currentUserId &&
+        currentUserId !== userId &&
+        role &&
+        role !== "ADMIN" &&
+        user?.isPrivateAccount
+      )
+        throw new NotFound("Cannot access private user.");
 
       return user;
     } catch (error) {
