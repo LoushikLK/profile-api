@@ -109,11 +109,6 @@ const validateEmailLogin = () => {
 const validateChangePassword = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const validations: ValidationChain[] = [
-      body("email")
-        .notEmpty()
-        .withMessage("Provide a valid email.")
-        .isEmail()
-        .withMessage("provide a valid email."),
       body("password")
         .notEmpty()
         .withMessage("Provide a valid password.")

@@ -80,9 +80,9 @@ export default class AuthRouter extends AuthService {
    *                 success:
    *                   type: boolean
    *                   example: true
-   *                 message:
+   *                 msg:
    *                   type: string
-   *                   example: Registered
+   *                   example: Verify your email.
    *       400:
    *         description: Bad Request
    *         content:
@@ -93,7 +93,7 @@ export default class AuthRouter extends AuthService {
    *                 success:
    *                   type: boolean
    *                   example: false
-   *                 message:
+   *                 msg:
    *                   type: string
    *                   example: Bad Request
    *       404:
@@ -106,9 +106,22 @@ export default class AuthRouter extends AuthService {
    *                 success:
    *                   type: boolean
    *                   example: false
-   *                 message:
+   *                 msg:
    *                   type: string
    *                   example: Not Found
+   *       406:
+   *         description: Not Acceptable
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                   example: false
+   *                 msg:
+   *                   type: string
+   *                   example: Not Acceptable
    *       500:
    *         description: Internal Server Error
    *         content:
@@ -119,7 +132,7 @@ export default class AuthRouter extends AuthService {
    *                 success:
    *                   type: boolean
    *                   example: false
-   *                 message:
+   *                 msg:
    *                   type: string
    *                   example: Internal Server Error
    *
@@ -166,9 +179,9 @@ export default class AuthRouter extends AuthService {
      *               properties:
      *                 success:
      *                   type: boolean
-     *                 message:
+     *                 msg:
      *                   type: string
-     *                 token:
+     *                 ACCESS_TOKEN:
      *                   type: string
      *       400:
      *         description: Bad Request
@@ -178,14 +191,30 @@ export default class AuthRouter extends AuthService {
      *               type: object
      *               required:
      *                 - success
-     *                 - message
+     *                 - msg
      *               properties:
      *                 success:
      *                   type: boolean
      *                   example: false
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   example: Bad Request
+     *       406:
+     *         description: Not Acceptable
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               required:
+     *                 - success
+     *                 - msg
+     *               properties:
+     *                 success:
+     *                   type: boolean
+     *                   example: false
+     *                 msg:
+     *                   type: string
+     *                   example: Not Acceptable
      *       500:
      *         description: Internal Server Error
      *         content:
@@ -199,7 +228,7 @@ export default class AuthRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   example: false
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   example: Internal Server Error
      */
@@ -233,7 +262,7 @@ export default class AuthRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   example: false
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   example: Bad Request
      *       500:
@@ -249,7 +278,7 @@ export default class AuthRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   example: false
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   example: Internal Server Error
      */
@@ -282,7 +311,7 @@ export default class AuthRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   example: false
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   example: Bad Request
      *       500:
@@ -298,7 +327,7 @@ export default class AuthRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   example: false
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   example: Internal Server Error
      */
@@ -337,10 +366,6 @@ export default class AuthRouter extends AuthService {
      *           schema:
      *             type: object
      *             properties:
-     *               email:
-     *                 type: string
-     *                 format: email
-     *                 description: User's email address.
      *               password:
      *                 type: string
      *                 description: Current password.
@@ -358,12 +383,12 @@ export default class AuthRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the password change was successful.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Message indicating the result of the operation.
      *             example:
      *               success: true
-     *               message: Password changed successfully.
+     *               msg: Password changed successfully.
      *       '400':
      *         description: Invalid request body or parameters.
      *         content:
@@ -371,11 +396,11 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message describing the issue.
      *             example:
-     *               message: Email is not valid.
+     *               msg: Email is not valid.
      *       '401':
      *         description: Unauthorized. User not authenticated.
      *         content:
@@ -383,11 +408,11 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
      *             example:
-     *               message: Unauthorized access.
+     *               msg: Unauthorized access.
      *       '403':
      *         description: Forbidden. User does not have permission to perform the action.
      *         content:
@@ -395,11 +420,11 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the forbidden access.
      *             example:
-     *               message: You do not have permission to change the password.
+     *               msg: You do not have permission to change the password.
      */
 
     this.router.post(
@@ -439,12 +464,12 @@ export default class AuthRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the verification code resend was successful.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Message indicating the result of the operation.
      *             example:
      *               success: true
-     *               message: Verification code resent successfully.
+     *               msg: Verification code resent successfully.
      *       '400':
      *         description: Invalid request body or parameters.
      *         content:
@@ -452,11 +477,11 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message describing the issue.
      *             example:
-     *               message: Email is not valid.
+     *               msg: Email is not valid.
      *       '401':
      *         description: Unauthorized. User not authenticated.
      *         content:
@@ -464,11 +489,11 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
      *             example:
-     *               message: Unauthorized access.
+     *               msg: Unauthorized access.
      */
 
     this.router.post(
@@ -506,12 +531,12 @@ export default class AuthRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the account verification was successful.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Message indicating the result of the operation.
      *             example:
      *               success: true
-     *               message: Account verified successfully.
+     *               msg: Account verified successfully.
      *       '400':
      *         description: Invalid request body or parameters.
      *         content:
@@ -519,11 +544,15 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message describing the issue.
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the account verification was successful.
      *             example:
-     *               message: Invalid or expired verification token.
+     *               msg: Invalid verification token.
+     *               success: false
      *       '401':
      *         description: Unauthorized. User not authenticated.
      *         content:
@@ -531,11 +560,15 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
+     *                 success:
+     *                   type: boolean
+     *                   description: Indicates if the account verification was successful.
      *             example:
-     *               message: Unauthorized access.
+     *               msg: Unauthorized access.
+     *               success: false
      */
 
     this.router.post(
@@ -574,12 +607,12 @@ export default class AuthRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the OTP was sent successfully.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Message indicating the result of the operation.
      *             example:
      *               success: true
-     *               message: OTP sent successfully.
+     *               msg: OTP sent successfully.
      *       '400':
      *         description: Invalid request body or parameters.
      *         content:
@@ -587,11 +620,11 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message describing the issue.
      *             example:
-     *               message: Invalid email format.
+     *               msg: Invalid email format.
      */
 
     this.router.post(
@@ -639,12 +672,12 @@ export default class AuthRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the password reset was successful.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Message indicating the result of the operation.
      *             example:
      *               success: true
-     *               message: Password reset successful.
+     *               msg: Password reset successful.
      *       '400':
      *         description: Invalid request body or parameters.
      *         content:
@@ -652,11 +685,11 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message describing the issue.
      *             example:
-     *               message: Invalid OTP or email format.
+     *               msg: Invalid OTP or email format.
      *       '401':
      *         description: Unauthorized. User not authenticated.
      *         content:
@@ -664,11 +697,11 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
      *             example:
-     *               message: Unauthorized access.
+     *               msg: Unauthorized access.
      */
 
     this.router.post(
@@ -706,12 +739,12 @@ export default class AuthRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the logout operation was successful.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Message indicating the result of the operation.
      *             example:
      *               success: true
-     *               message: User logged out successfully.
+     *               msg: User logged out successfully.
      *       '401':
      *         description: Unauthorized. User not authenticated.
      *         content:
@@ -719,11 +752,11 @@ export default class AuthRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
      *             example:
-     *               message: Unauthorized access. Please login to continue.
+     *               msg: Unauthorized access. Please login to continue.
      */
 
     this.router.post(

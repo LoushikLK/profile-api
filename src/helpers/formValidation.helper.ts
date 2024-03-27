@@ -15,19 +15,12 @@ export const formValidatorHelper = async (
   if (!errors.isEmpty()) {
     return res.status(406).json({
       success: false,
-      msg: errors.array().map((errors) => {
-        if (errors?.type === "field") {
-          return {
-            key: errors.path,
-            msg: errors.msg,
-          };
-        } else {
-          return {
-            key: errors.type,
-            msg: errors.msg,
-          };
-        }
-      }),
+      msg: errors
+        .array()
+        .map((errors) => {
+          return errors.msg;
+        })
+        .join(", "),
     });
   }
   //if no error go to the next function

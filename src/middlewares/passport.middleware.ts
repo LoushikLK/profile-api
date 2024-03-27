@@ -40,6 +40,7 @@ export default class PassportService {
                 displayName: profile.displayName,
                 googleAccessToken: accessToken,
                 photoUrl: profile.photos?.[0].value,
+                googleSecretToken: refreshToken,
               },
               {
                 runValidators: true,

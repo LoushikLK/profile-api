@@ -32,7 +32,7 @@ export default class Controllers {
         subject: "Verify Your Email",
         text: `
         <h3 style="width:100%;text-align:center;" >Please verify your email by clicking on the link below.</h3>
-        <a style="width:100%;text-align:center;display:flex;" href="http://localhost:8000/verify-email/${newUser.token}" >Verify</a>
+        <a style="width:100%;text-align:center;display:flex;" href="http://localhost:8000/verify-email?token=${newUser.token}" >Verify</a>
         `,
       });
       //send response to client
@@ -155,19 +155,19 @@ export default class Controllers {
   public async changePassword(req: Request, res: Response, next: NextFunction) {
     try {
       //get all the data from body
-      const { email, password, newPassword } = req.body;
+      const { password, newPassword } = req.body;
       //validate user is exist or not
 
       //change the password
       const user = await this.service.verifyAndCreateNewPassword(
-        email,
+        req?.currentUser?.email,
         password,
         newPassword
       );
 
       //send email to the user about account created and verification link
       await sendEmail({
-        to: user.email,
+        to: user?.email,
         subject: "Password Changed!",
         text: `
         <h3 style="width:100%;text-align:center;" >Your password has been changed recently. If not done by you change your password immediately.</h3>

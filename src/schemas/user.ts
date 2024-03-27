@@ -38,7 +38,10 @@ const userSchema = new Schema<IUser, Model<IUser>>({
   },
   photoUrl: String,
   photoPath: String,
-  role: String,
+  role: {
+    type: String,
+    default: "USER",
+  },
   isPrivateAccount: {
     type: Boolean,
     default: false,

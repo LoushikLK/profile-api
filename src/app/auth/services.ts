@@ -42,7 +42,7 @@ export default class Service {
       countryCode,
       rawPassword,
       token,
-      role: "ADMIN",
+      role: "USER",
     }).save();
   };
   public verifyEmailToken = async (token: string) => {

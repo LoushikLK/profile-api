@@ -49,7 +49,7 @@ export default class UserRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the profile retrieval was successful.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Message indicating the result of the operation.
      *                 data:
@@ -61,7 +61,7 @@ export default class UserRouter extends AuthService {
      *                       description: User profile data.
      *             example:
      *               success: true
-     *               message: User profile retrieved successfully.
+     *               msg: User profile retrieved successfully.
      *               data:
      *                 data:
      *                   displayName: John Doe
@@ -87,12 +87,12 @@ export default class UserRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the profile retrieval failed due to unauthorized access.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
      *             example:
      *               success: false
-     *               message: Unauthorized access. Please login to continue.
+     *               msg: Unauthorized access. Please login to continue.
      */
 
     this.router.get("/self", this.isAuthenticated, this.controller.getSelf);
@@ -173,12 +173,12 @@ export default class UserRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the profile update was successful.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Message indicating the result of the operation.
      *             example:
      *               success: true
-     *               message: User profile updated successfully.
+     *               msg: User profile updated successfully.
      *       '400':
      *         description: Invalid request body or parameters.
      *         content:
@@ -186,11 +186,11 @@ export default class UserRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message describing the issue.
      *             example:
-     *               message: Invalid phone number format.
+     *               msg: Invalid phone number format.
      *       '401':
      *         description: Unauthorized. User not authenticated.
      *         content:
@@ -198,11 +198,11 @@ export default class UserRouter extends AuthService {
      *             schema:
      *               type: object
      *               properties:
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
      *             example:
-     *               message: Unauthorized access.
+     *               msg: Unauthorized access.
      */
 
     this.router.patch(
@@ -300,12 +300,12 @@ export default class UserRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the profile update was successful.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Message indicating the result of the operation.
      *             example:
      *               success: true
-     *               message: User profile updated successfully.
+     *               msg: User profile updated successfully.
      *       '401':
      *         description: Unauthorized. User not authenticated or user does not have admin role.
      *         content:
@@ -316,12 +316,12 @@ export default class UserRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates that the update failed due to unauthorized access.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
      *             example:
      *               success: false
-     *               message: Unauthorized access. Admin role required.
+     *               msg: Unauthorized access. Admin role required.
      */
 
     this.router.patch(
@@ -366,7 +366,7 @@ export default class UserRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the profile retrieval was successful.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Message indicating the result of the operation.
      *                 data:
@@ -378,7 +378,7 @@ export default class UserRouter extends AuthService {
      *                       description: User profile data.
      *             example:
      *               success: true
-     *               message: User profile retrieved successfully.
+     *               msg: User profile retrieved successfully.
      *               data:
      *                 data:
      *                   userId: "12345"
@@ -407,12 +407,12 @@ export default class UserRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the profile retrieval failed due to unauthorized access.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
      *             example:
      *               success: false
-     *               message: Unauthorized access. Please login to continue.
+     *               msg: Unauthorized access. Please login to continue.
      *       '404':
      *         description: User not found.
      *         content:
@@ -423,12 +423,12 @@ export default class UserRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates that the user profile retrieval failed because the user was not found.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the user was not found.
      *             example:
      *               success: false
-     *               message: User not found.
+     *               msg: User not found.
      */
 
     this.router.get(
@@ -482,7 +482,7 @@ export default class UserRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates if the users were retrieved successfully.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Message indicating the result of the operation.
      *                 data:
@@ -506,7 +506,7 @@ export default class UserRouter extends AuthService {
      *                       description: Total count of users.
      *             example:
      *               success: true
-     *               message: Users retrieved successfully.
+     *               msg: Users retrieved successfully.
      *               data:
      *                 data:
      *                   - userId: "12345"
@@ -538,12 +538,12 @@ export default class UserRouter extends AuthService {
      *                 success:
      *                   type: boolean
      *                   description: Indicates that the users retrieval failed due to unauthorized access.
-     *                 message:
+     *                 msg:
      *                   type: string
      *                   description: Error message indicating the unauthorized access.
      *             example:
      *               success: false
-     *               message: Unauthorized access. Please login to continue.
+     *               msg: Unauthorized access. Please login to continue.
      */
 
     this.router.get(
