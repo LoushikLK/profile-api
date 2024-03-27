@@ -76,21 +76,6 @@ const validateResendVerificationCode = () => {
         .trim()
         .isEmail()
         .withMessage("provide a valid email."),
-      body("phoneNumber")
-        .optional()
-        .trim()
-        .isMobilePhone("en-IN")
-        .withMessage("provide a valid phoneNumber.")
-        .custom((value, { req }) => {
-          if (!value && !req.body?.email) return false;
-          return true;
-        })
-        .withMessage("Email is required."),
-      body("isPhoneNumber")
-        .optional()
-        .isBoolean()
-        .withMessage("provide a valid isPhoneNumber.")
-        .toBoolean(),
     ];
 
     await formValidatorHelper(validations, req, res, next);
@@ -104,7 +89,18 @@ const validateEmailLogin = () => {
         .withMessage("Provide a valid email.")
         .isEmail()
         .withMessage("provide a valid email."),
-      body("password").notEmpty().withMessage("Provide a valid password."),
+      body("password")
+        .notEmpty()
+        .withMessage("Provide a valid password.")
+        .isStrongPassword({
+          minLength: 6,
+          minLowercase: 1,
+          minNumbers: 1,
+          minSymbols: 1,
+        })
+        .withMessage(
+          "Enter a strong password that contains a minimum 1 lowercase, 1 uppercase, 1 number, 1 symbol."
+        ),
     ];
 
     await formValidatorHelper(validations, req, res, next);
@@ -118,17 +114,39 @@ const validateChangePassword = () => {
         .withMessage("Provide a valid email.")
         .isEmail()
         .withMessage("provide a valid email."),
-      body("password").notEmpty().withMessage("Provide a valid password."),
+      body("password")
+        .notEmpty()
+        .withMessage("Provide a valid password.")
+        .isStrongPassword({
+          minLength: 6,
+          minLowercase: 1,
+          minNumbers: 1,
+          minSymbols: 1,
+          minUppercase: 1,
+        })
+        .withMessage(
+          "Enter a strong password that contains a minimum 1 lowercase, 1 uppercase, 1 number, 1 symbol."
+        ),
       body("newPassword")
         .notEmpty()
         .withMessage("Provide a valid newPassword.")
+        .isStrongPassword({
+          minLength: 6,
+          minLowercase: 1,
+          minNumbers: 1,
+          minSymbols: 1,
+          minUppercase: 1,
+        })
+        .withMessage(
+          "Enter a strong new password that contains a minimum 1 lowercase, 1 uppercase, 1 number, 1 symbol."
+        )
         .custom((value, { req }) => {
-          if (value !== req?.body?.password) {
+          if (value === req?.body?.password) {
             return false;
           }
           return true;
         })
-        .withMessage("Password and newPassword must match."),
+        .withMessage("Password and newPassword can not be match."),
     ];
 
     await formValidatorHelper(validations, req, res, next);

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import AuthService from "../../services/auth.service";
 import UserController from "./controllers";
+import { UserValidation } from "./validations";
 
 export default class UserRouter extends AuthService {
   public router: Router;
@@ -207,6 +208,7 @@ export default class UserRouter extends AuthService {
     this.router.patch(
       "/self",
       this.isAuthenticated,
+      UserValidation.validateSelfUpdate(),
       this.controller.updateSelf
     );
 
@@ -322,7 +324,12 @@ export default class UserRouter extends AuthService {
      *               message: Unauthorized access. Admin role required.
      */
 
-    this.router.patch("/:userId", this.isAdmin, this.controller.updateUserById);
+    this.router.patch(
+      "/:userId",
+      UserValidation.validateUserById(),
+      this.isAdmin,
+      this.controller.updateUserById
+    );
 
     /**
      * @openapi
@@ -426,6 +433,7 @@ export default class UserRouter extends AuthService {
 
     this.router.get(
       "/:userId",
+      UserValidation.validateGetUserById(),
       this.isAuthenticated,
       this.controller.getUserById
     );
@@ -538,6 +546,11 @@ export default class UserRouter extends AuthService {
      *               message: Unauthorized access. Please login to continue.
      */
 
-    this.router.get("/", this.isAuthenticated, this.controller.getAllUserData);
+    this.router.get(
+      "/",
+      UserValidation.validateGetAllUsers(),
+      this.isAuthenticated,
+      this.controller.getAllUserData
+    );
   }
 }

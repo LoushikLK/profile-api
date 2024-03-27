@@ -621,6 +621,9 @@ export default class AuthRouter extends AuthService {
      *               newPassword:
      *                 type: string
      *                 description: New password to be set for the user's account.
+     *               confirmPassword:
+     *                 type: string
+     *                 description: New password to be set for the user's account.
      *               email:
      *                 type: string
      *                 format: email
