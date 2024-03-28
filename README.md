@@ -6,7 +6,7 @@ This project involves the enhancement of an existing backend API for an authenti
 
 - Registration of new accounts
 - Login functionality
-- Social login integration with Google, Facebook, Twitter, or GitHub
+- Social login integration with Google.
 - Logout functionality
 - Viewing of profile details
 - Editing profile details including photo, name, bio, phone, email, and password
